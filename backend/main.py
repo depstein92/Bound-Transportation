@@ -32,16 +32,15 @@ def create_trip():
 
 @app.route('/get-user-by-name/<user_name>', methods=['GET'])
 def get_user(user_name):
-		print(user_name)
-		if user_name:
-			try:
-				user = base.get_user_by_name(user_name)
-				return jsonify(user)
-			except Exception as e:
-				print(str(e))
-				return index(str(e))
-		else: 
+	if user_name:
+		try:
+			user = base.get_user_by_name(user_name)
+			return jsonify(user)
+		except Exception as e:
+			print(str(e))
 			return index(str(e))
+	else: 
+		return index(str(e))
 
 
 @app.route('/get-user-by-name', methods=['POST'])
