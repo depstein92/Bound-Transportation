@@ -3,15 +3,15 @@ from peewee import *
 bt_db = SqliteDatabase('bt.db')
 
 class User(Model):
-    user_name = CharField(max_length=25)
-    user_id = IntegerField()
+    user_name = CharField(max_length=25, unique=True)
+    user_id = AutoField()
 
     class Meta:
         database = bt_db
 
 class Driver(Model):
-    user_name = CharField(max_length=25)
-    driver_id = IntegerField()
+    user_name = CharField(max_length=25, unique=True)
+    driver_id = AutoField()
 
     class Meta:
         database = bt_db
@@ -25,6 +25,7 @@ class Trip(Model):
 	trip_has_completed = BooleanField()
 	current_lat_long = CharField(max_length=100)
 	date_created = DateTimeField()
+	trip_id = AutoField()
 	
 	class Meta:
 		database = bt_db
