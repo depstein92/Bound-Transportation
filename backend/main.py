@@ -10,16 +10,21 @@ base = BaseAPI()
 def index(notification=None):
 	if notification:
 		return notification
-	return 'service is up.'
+	# TODO: serve web app too ... 
+	return 'Service is up.'
 
 
 @app.route('/create-user', methods=['POST'])
 def create_user():
 	try:
 		success = base.create_user(request)
-		return jsonify(success)
+		return success
 	except Exception as e:
-		return index(str(e))
+		base.log_data(str(e))
+		response = {
+			'Error': 'Create user operation failed.'
+		}
+		return jsonify(response)
 
 
 @app.route('/create-trip', methods=['POST'])
@@ -28,7 +33,23 @@ def create_trip():
 		success = base.create_trip(request)
 		return success
 	except Exception as e:
-		return index(str(e))
+		base.log_data(str(e))
+		response = {
+			'Error': 'Create trip operation failed.'
+		}
+		return jsonify(response)
+
+@app.route('/get-trip-by-start-lat-long', methods=['POST'])
+def get_trip_by_start_lat_long():
+	try:
+		trip = base.get_trip_by_start_lat_long(request)
+		return jsonify(trip)
+	except Exception as e:
+		base.log_data(str(e))
+		response = {
+			'Error': 'Get trip operation failed.'
+		}
+		return jsonify(response)
 
 
 @app.route('/get-user-by-name/<user_name>', methods=['GET'])
@@ -37,7 +58,11 @@ def get_user(user_name):
 		user = base.get_user_by_name(user_name)
 		return jsonify(user)
 	except Exception as e: 
-		return index(str(e))
+		base.log_data(str(e))
+		response = {
+			'Error': 'Get user operation failed.'
+		}
+		return jsonify(response)
 
 
 @app.route('/get-user-by-name', methods=['POST'])
@@ -46,8 +71,13 @@ def get_user_by_post():
 		user_name = request.form.get('user_name')
 		user = base.get_user_by_name(user_name)
 		return jsonify(user)
-	except Exception as e:
-		return index(str(e))
+	except:
+		base.log_data(str(e))
+		response = {
+			'Error': 'Get user operation failed.'
+		}
+		return jsonify(response)
+
 
 
 if __name__ == '__main__':

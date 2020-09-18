@@ -1,5 +1,6 @@
-import random
 import configparser
+import logging
+import random
 from datetime import datetime
 from db import bt_db
 from db import User
@@ -15,6 +16,11 @@ class BaseAPI:
 		self.trip = Trip
 		self.config = configparser.ConfigParser()
 		self.config.read('bound_transportation.cfg')
+		self.log = self.config['logging']['output']
+		self.logging = logging.basicConfig(
+			filename=self.log, 
+			filemode='w', 
+			format='%(name)s - %(levelname)s - %(message)s')
 
 	def create_user(self, request):
 		"""Create a user.
@@ -29,14 +35,14 @@ class BaseAPI:
 		Returns
 		-------
 		
-		0
+		'0': str
 		"""
 		kwargs = {}
 		kwargs['user_name'] = request.form.get('user_name')
 		kwargs['user_created']=datetime.now()
 		user = self.user(**kwargs)
 		user.save()
-		return 0
+		return '0'
 
 	def create_driver(self, request):
 		"""Create a driver.
@@ -51,7 +57,7 @@ class BaseAPI:
 		Returns
 		-------
 		
-		0
+		'0': str
 		"""
 		kwargs = {}
 		kwargs['driver_name'] = \
@@ -59,7 +65,7 @@ class BaseAPI:
 		kwargs['driver_created']=datetime.now()
 		driver = self.driver(**kwargs)
 		user.save()
-		return 0
+		return '0'
 
 	def get_user_by_name(self, name):
 		"""Get a user by username.
@@ -98,7 +104,7 @@ class BaseAPI:
 		Returns
 		-------
 		
-		0
+		'0' : str
 		"""
 		kwargs = {}
 		kwargs['start_location_lat_long'] = \
@@ -116,7 +122,7 @@ class BaseAPI:
 		kwargs['date_created'] = datetime.now()
 		trip = self.trip(**kwargs)
 		trip.save()
-		return 0
+		return '0'
 
 	def get_trip_by_start_lat_long(self, request):
 		"""Get a trip by start latitude and longitude.
@@ -140,7 +146,8 @@ class BaseAPI:
 		trip = self.trip.get(
 			self.trip.start_location_lat_long == \
 			start_location_lat_long)
-		trip = self.serialize_model('trip', trip)
+		trip = self.serialize_model(
+			model_name='trip', model=trip)
 		return trip
 
 
@@ -163,7 +170,8 @@ class BaseAPI:
 		"""
 		trip = self.trip.get(
 			self.trip.date_created==datetime)
-		trip = self.serialize_model('trip', trip)
+		trip = self.serialize_model(
+			model_name='trip', model=trip)
 		return trip
 
 	# def generate_user_id(self):
@@ -195,6 +203,11 @@ class BaseAPI:
 		values = self.config['serializer_values'][model_name]
 		for key, value in model.__data__.items():
 			if key in values:
+				if type(value) not in ['datetime']:
+					serialized[key] = str(value)
 				serialized[key] = value
 		return serialized
+
+	def log_data(self, msg):
+		logging.warning(msg)
 
