@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>base_api module &#8212; Bound Transportation 0.0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-base_api">
+<span id="base-api-module"></span><h1>base_api module<a class="headerlink" href="#module-base_api" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="base_api.BaseAPI">
+<em class="property">class </em><code class="sig-prename descclassname">base_api.</code><code class="sig-name descname">BaseAPI</code><a class="headerlink" href="#base_api.BaseAPI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="base_api.BaseAPI.create_driver">
+<code class="sig-name descname">create_driver</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em><span class="sig-paren">)</span><a class="headerlink" href="#base_api.BaseAPI.create_driver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a driver.</p>
+<p>request : obj</p>
+<blockquote>
+<div><p>A Flask <cite>request</cite> object.</p>
+</div></blockquote>
+<p>0</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="base_api.BaseAPI.create_trip">
+<code class="sig-name descname">create_trip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em><span class="sig-paren">)</span><a class="headerlink" href="#base_api.BaseAPI.create_trip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a trip.</p>
+<p>request: obj</p>
+<blockquote>
+<div><p>A Flask <cite>request</cite> object.</p>
+</div></blockquote>
+<p>0</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="base_api.BaseAPI.create_user">
+<code class="sig-name descname">create_user</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em><span class="sig-paren">)</span><a class="headerlink" href="#base_api.BaseAPI.create_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a user.</p>
+<p>request : obj</p>
+<blockquote>
+<div><p>A Flask <cite>request</cite> object.</p>
+</div></blockquote>
+<p>0</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="base_api.BaseAPI.get_trip_by_date_created">
+<code class="sig-name descname">get_trip_by_date_created</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em><span class="sig-paren">)</span><a class="headerlink" href="#base_api.BaseAPI.get_trip_by_date_created" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a trip by the date that it was created.</p>
+<p>request: obj</p>
+<blockquote>
+<div><p>A Flask <cite>request</cite> object.</p>
+</div></blockquote>
+<p>trip: dict</p>
+<blockquote>
+<div><p>The product of serializing the Trip model.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt id="base_api.BaseAPI.get_trip_by_start_lat_long">
+<code class="sig-name descname">get_trip_by_start_lat_long</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em><span class="sig-paren">)</span><a class="headerlink" href="#base_api.BaseAPI.get_trip_by_start_lat_long" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a trip by start latitude and longitude.</p>
+<p>request: obj</p>
+<blockquote>
+<div><p>A Flask <cite>request</cite> object.</p>
+</div></blockquote>
+<p>trip: dict</p>
+<blockquote>
+<div><p>The product of serializing the Trip model.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt id="base_api.BaseAPI.get_user_by_name">
+<code class="sig-name descname">get_user_by_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#base_api.BaseAPI.get_user_by_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a user by username.</p>
+<p>name: str</p>
+<blockquote>
+<div><p>The unique <cite>user_name</cite> of the user being requested.</p>
+</div></blockquote>
+<p>user: dict</p>
+<blockquote>
+<div><p>The product of serializing the User model.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt id="base_api.BaseAPI.serialize_model">
+<code class="sig-name descname">serialize_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model_name</span></em>, <em class="sig-param"><span class="n">model</span></em><span class="sig-paren">)</span><a class="headerlink" href="#base_api.BaseAPI.serialize_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serialize Peewee database models.</p>
+<p>model_name: str</p>
+<blockquote>
+<div><p>The lowercase name of the model to be serialized.</p>
+</div></blockquote>
+<p>model: obj</p>
+<blockquote>
+<div><p>The model to be serialized.</p>
+</div></blockquote>
+<p>serialized: dict</p>
+<blockquote>
+<div><p>The serialized model.</p>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Bound Transportation</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Dan Epstein, Jeff Vincent.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/source/base_api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

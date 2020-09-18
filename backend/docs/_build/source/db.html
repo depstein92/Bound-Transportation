@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>db module &#8212; Bound Transportation 0.0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-db">
+<span id="db-module"></span><h1>db module<a class="headerlink" href="#module-db" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="db.Driver">
+<em class="property">class </em><code class="sig-prename descclassname">db.</code><code class="sig-name descname">Driver</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#db.Driver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">peewee.Model</span></code></p>
+<dl class="py attribute">
+<dt id="db.Driver.DoesNotExist">
+<code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#db.Driver.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">DriverDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="db.Driver.driver_id">
+<code class="sig-name descname">driver_id</code><em class="property"> = &lt;AutoField: Driver.driver_id&gt;</em><a class="headerlink" href="#db.Driver.driver_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="db.Driver.user_name">
+<code class="sig-name descname">user_name</code><em class="property"> = &lt;CharField: Driver.user_name&gt;</em><a class="headerlink" href="#db.Driver.user_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="db.Trip">
+<em class="property">class </em><code class="sig-prename descclassname">db.</code><code class="sig-name descname">Trip</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#db.Trip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">peewee.Model</span></code></p>
+<dl class="py attribute">
+<dt id="db.Trip.DoesNotExist">
+<code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#db.Trip.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">TripDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="db.Trip.current_lat_long">
+<code class="sig-name descname">current_lat_long</code><em class="property"> = &lt;CharField: Trip.current_lat_long&gt;</em><a class="headerlink" href="#db.Trip.current_lat_long" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="db.Trip.date_created">
+<code class="sig-name descname">date_created</code><em class="property"> = &lt;DateTimeField: Trip.date_created&gt;</em><a class="headerlink" href="#db.Trip.date_created" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="db.Trip.destination_lat_long">
+<code class="sig-name descname">destination_lat_long</code><em class="property"> = &lt;CharField: Trip.destination_lat_long&gt;</em><a class="headerlink" href="#db.Trip.destination_lat_long" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="db.Trip.destination_street_address">
+<code class="sig-name descname">destination_street_address</code><em class="property"> = &lt;CharField: Trip.destination_street_address&gt;</em><a class="headerlink" href="#db.Trip.destination_street_address" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="db.Trip.start_location_lat_long">
+<code class="sig-name descname">start_location_lat_long</code><em class="property"> = &lt;CharField: Trip.start_location_lat_long&gt;</em><a class="headerlink" href="#db.Trip.start_location_lat_long" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="db.Trip.start_location_street_address">
+<code class="sig-name descname">start_location_street_address</code><em class="property"> = &lt;CharField: Trip.start_location_street_address&gt;</em><a class="headerlink" href="#db.Trip.start_location_street_address" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="db.Trip.trip_has_begun">
+<code class="sig-name descname">trip_has_begun</code><em class="property"> = &lt;BooleanField: Trip.trip_has_begun&gt;</em><a class="headerlink" href="#db.Trip.trip_has_begun" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="db.Trip.trip_has_completed">
+<code class="sig-name descname">trip_has_completed</code><em class="property"> = &lt;BooleanField: Trip.trip_has_completed&gt;</em><a class="headerlink" href="#db.Trip.trip_has_completed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="db.Trip.trip_id">
+<code class="sig-name descname">trip_id</code><em class="property"> = &lt;AutoField: Trip.trip_id&gt;</em><a class="headerlink" href="#db.Trip.trip_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="db.User">
+<em class="property">class </em><code class="sig-prename descclassname">db.</code><code class="sig-name descname">User</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#db.User" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">peewee.Model</span></code></p>
+<dl class="py attribute">
+<dt id="db.User.DoesNotExist">
+<code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#db.User.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">UserDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="db.User.user_id">
+<code class="sig-name descname">user_id</code><em class="property"> = &lt;AutoField: User.user_id&gt;</em><a class="headerlink" href="#db.User.user_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="db.User.user_name">
+<code class="sig-name descname">user_name</code><em class="property"> = &lt;CharField: User.user_name&gt;</em><a class="headerlink" href="#db.User.user_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="db.initialize_db">
+<code class="sig-prename descclassname">db.</code><code class="sig-name descname">initialize_db</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#db.initialize_db" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Bound Transportation</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Dan Epstein, Jeff Vincent.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/source/db.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

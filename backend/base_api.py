@@ -21,11 +21,14 @@ class BaseAPI:
 
 		Parameters
 		----------
+		
 		request : obj
+			
 			A Flask `request` object.
 
 		Returns
 		-------
+		
 		0
 		"""
 		kwargs = {}
@@ -40,11 +43,14 @@ class BaseAPI:
 
 		Parameters
 		----------
+		
 		request : obj
+			
 			A Flask `request` object.
 
 		Returns
 		-------
+		
 		0
 		"""
 		kwargs = {}
@@ -60,12 +66,16 @@ class BaseAPI:
 
 		Parameters
 		----------
+		
 		name: str
+			
 			The unique `user_name` of the user being requested.
 
 		Returns
 		-------
+		
 		user: dict
+			
 			The product of serializing the User model.
 		"""
 		user = self.user.get(
@@ -80,11 +90,14 @@ class BaseAPI:
 
 		Parameters
 		----------
+		
 		request: obj
+			
 			A Flask `request` object.
 
 		Returns
 		-------
+		
 		0
 		"""
 		kwargs = {}
@@ -110,12 +123,16 @@ class BaseAPI:
 
 		Parameters
 		----------
+		
 		request: obj
+			
 			A Flask `request` object.
 
 		Returns
 		-------
+		
 		trip: dict
+			
 			The product of serializing the Trip model.
 		"""
 		start_location_lat_long = \
@@ -132,12 +149,16 @@ class BaseAPI:
 
 		Parameters
 		----------
+		
 		request: obj
+			
 			A Flask `request` object.
 
 		Returns
 		-------
+		
 		trip: dict
+			
 			The product of serializing the Trip model.
 		"""
 		trip = self.trip.get(
@@ -154,14 +175,20 @@ class BaseAPI:
 
 		Parameters
 		----------
+		
 		model_name: str
+			
 			The lowercase name of the model to be serialized.
+		
 		model: obj
+			
 			The model to be serialized.
 
 		Returns
 		-------
+		
 		serialized: dict
+			
 			The serialized model.
 		"""
 		serialized = {}
