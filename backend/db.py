@@ -4,6 +4,7 @@ bt_db = SqliteDatabase('bt.db')
 
 class User(Model):
     user_name = CharField(max_length=25, unique=True)
+    password = CharField()
     user_id = AutoField()
 
     class Meta:

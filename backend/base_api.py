@@ -2,6 +2,8 @@ import configparser
 import logging
 import random
 from datetime import datetime
+from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
 from db import bt_db
 from db import User
 from db import Driver
@@ -35,14 +37,17 @@ class BaseAPI:
 		Returns
 		-------
 		
-		'0': str
+		1: int
 		"""
 		kwargs = {}
+		raw_password = request.form.get('password')
+		hashed_password = generate_password_hash(raw_password)
 		kwargs['user_name'] = request.form.get('user_name')
-		kwargs['user_created']=datetime.now()
+		kwargs['password'] = hashed_password
+		kwargs['user_created'] = datetime.now()
 		user = self.user(**kwargs)
 		user.save()
-		return '0'
+		return 1
 
 	def create_driver(self, request):
 		"""Create a driver.
@@ -57,15 +62,26 @@ class BaseAPI:
 		Returns
 		-------
 		
-		'0': str
+		1: int
 		"""
 		kwargs = {}
 		kwargs['driver_name'] = \
 		request.form.get('driver_name')
-		kwargs['driver_created']=datetime.now()
+		kwargs['driver_created'] = datetime.now()
 		driver = self.driver(**kwargs)
 		user.save()
-		return '0'
+		return 1
+
+	def login_user(self, request):
+		user_name = request.form.get('user_name')
+		password = request.form.get('password')
+		user = self.user.get(
+			self.user.user_name == user_name)
+		print(user.password)
+		if check_password_hash(user.password, password):
+			return 1
+		return 0
+
 
 	def get_user_by_name(self, name):
 		"""Get a user by username.
@@ -104,7 +120,7 @@ class BaseAPI:
 		Returns
 		-------
 		
-		'0' : str
+		1: int
 		"""
 		kwargs = {}
 		kwargs['start_location_lat_long'] = \
@@ -122,7 +138,7 @@ class BaseAPI:
 		kwargs['date_created'] = datetime.now()
 		trip = self.trip(**kwargs)
 		trip.save()
-		return '0'
+		return 1
 
 	def get_trip_by_start_lat_long(self, request):
 		"""Get a trip by start latitude and longitude.
