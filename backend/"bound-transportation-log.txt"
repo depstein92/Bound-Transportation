@@ -1,0 +1,8 @@
+werkzeug - WARNING -  * Debugger is active!
+werkzeug - INFO -  * Debugger PIN: 246-964-716
+werkzeug - INFO - 127.0.0.1 - - [18/Sep/2020 22:20:57] "[37mPOST /create-trip HTTP/1.1[0m" 200 -
+werkzeug - INFO - 127.0.0.1 - - [18/Sep/2020 22:21:09] "[37mPOST /get-trip-by-start-lat-long HTTP/1.1[0m" 200 -
+root - WARNING - <Model: Trip> instance matching query does not exist:
+SQL: SELECT "t1"."trip_id", "t1"."start_location_lat_long", "t1"."start_location_street_address", "t1"."destination_lat_long", "t1"."destination_street_address", "t1"."trip_has_begun", "t1"."trip_has_completed", "t1"."current_lat_long", "t1"."date_created" FROM "trip" AS "t1" WHERE ("t1"."start_location_lat_long" = ?) LIMIT ? OFFSET ?
+Params: ['erte', 1, 0]
+werkzeug - INFO - 127.0.0.1 - - [18/Sep/2020 22:22:26] "[35m[1mPOST /get-trip-by-start-lat-long HTTP/1.1[0m" 500 -
