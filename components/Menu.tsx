@@ -1,85 +1,93 @@
 import React, {useState, useEffect} from 'react';
-import { ScrollView } from 'react-native';
-import { Menu  } from 'react-native-paper';
+import { ScrollView, View } from 'react-native';
+import { List } from 'react-native-paper';
 
-
-interface MenuType {
-    driverMenuOptions: Array<object>,
-    userMenuOptions: Array<object>,
-    adminMenuOptions: Array<object>
+interface MenuItem{
+    text: string,
+    link: string, 
+    icon: HTMLElement   
 };
 
-const userMenuOptions: Array<object> = [
+const userMenuOptions = [
     {
         text: 'Start Trip',
         link: './start_trip',
-        component: <div></div>    
+        icon: <List.Icon icon="folder" />   
     },
     {
         text: 'History',
         link: './history',
-        compponent: <div></div>  
+        icon: <List.Icon icon="folder" />  
     },
     {    
         text: 'Current Trip',
         link: './current_trip',
-        component: <div></div>
-    },
-    {
-        text: 'Log Out'        
+        icon: <List.Icon icon="folder" />
     }
+    
 ],
-driverMenuOptions :  Array<object> = [
+driverMenuOptions = [
         {
             text: 'Requests',
             link: './driver_requests',
-            component: <div></div>    
+            icon: <div></div>, 
         },
         {
             text: 'History',
             link: './history',
-            component: <div></div>  
+            icon: <div></div>  
         },
         {
             text: 'Current Job',
             link: './current_job',
-            component: <div></div>        
+            icon: <div></div>        
         }     
 ],
-adminMenuOptions: Array<object> = [];
+adminMenuOptions: MenuItem[] = [];
 
-
-const [menuOptionsType, setMenuOptionsType] = useState<string>('user');
-
-useEffect(() => {
-    /**
-     * Temporary will default to 'user'
-     * waiting on backend development to be created
-    */
-  const getMenuType = () => {
-      return 'user';
-  }
-  setMenuOptionsType(getMenuType());     
-}, [])
+interface MenuType {
+    driverMenuOptions: MenuItem[],
+    userMenuOptions: MenuItem[],
+    adminMenuOptions: MenuItem[]
+};
 
 const MenuComponent: React.FC<MenuType> = ({ 
     driverMenuOptions, 
     userMenuOptions, 
     adminMenuOptions 
 }) => {
+    
+    const [menuOptionsType, setMenuOptionsType] = useState<string>('user');
+  
+    useEffect(() => {
+        /**
+         * Temporary will default to 'user'
+         * waiting on backend development to be created
+        */
+    const getMenuType = () => 'user';
+    
+    setMenuOptionsType(getMenuType());     
+    }, [])
+
     return (
-        <ScrollView>
-          {driverMenuOptions && menuOptionsType === "driver" && (
-              <div></div>
-          )} 
-          {userMenuOptions && menuOptionsType === "user" && (
-              <div></div>
-          )} 
-          {adminMenuOptions && menuOptionsType === "admin" && (
-              <div></div>
-          )}  
-        </ScrollView>
+        <View>
+            <List.Section>
+                <List.Subheader>Main Menu</List.Subheader>
+                { menuOptionsType === 'user' && userMenuOptions && (
+                    userMenuOptions.map(options => {
+                     return(
+                         <List.Item title={options.text} left={() => options?.icon} />
+                     )   
+                    }) 
+                ) }
+            </List.Section>        
+        </View>
     )
 }
 
-export default {MenuComponent, userMenuOptions};
+export {
+    MenuComponent, 
+    userMenuOptions,
+    driverMenuOptions,
+    adminMenuOptions
+};
