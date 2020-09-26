@@ -3,19 +3,21 @@ from peewee import *
 bt_db = SqliteDatabase('bt.db')
 
 class User(Model):
-    user_name = CharField(max_length=25, unique=True)
-    password = CharField()
-    user_id = AutoField()
+	user_id = AutoField()
+	user_name = CharField(max_length=25, unique=True)
+	password = CharField()
+	user_created = DateTimeField()
+	profile_image_url = CharField(null=True)
 
-    class Meta:
-        database = bt_db
+	class Meta:
+		database = bt_db
 
 class Driver(Model):
-    user_name = CharField(max_length=25, unique=True)
-    driver_id = AutoField()
+	user_name = CharField(max_length=25, unique=True)
+	driver_id = AutoField()
 
-    class Meta:
-        database = bt_db
+	class Meta:
+		database = bt_db
 
 class Trip(Model):
 	start_location_lat_long = CharField(max_length=100)
@@ -32,8 +34,8 @@ class Trip(Model):
 		database = bt_db
 
 def initialize_db():
-    bt_db.connect()
-    bt_db.create_tables([User, Driver, Trip], safe=True)
-    bt_db.close()
+	bt_db.connect()
+	bt_db.create_tables([User, Driver, Trip], safe=True)
+	bt_db.close()
 
 initialize_db()

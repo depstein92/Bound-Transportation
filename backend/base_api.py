@@ -1,13 +1,17 @@
 import configparser
+import io
 import logging
 import random
 from datetime import datetime
+import boto3
+from flask_jwt_extended import get_jwt_identity
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from db import bt_db
 from db import User
 from db import Driver
 from db import Trip
+from error_mapping import known_errors
 
 
 class BaseAPI:
@@ -23,6 +27,8 @@ class BaseAPI:
 			filename=self.log, 
 			filemode='w', 
 			format='%(name)s - %(levelname)s - %(message)s')
+		self.s3 = boto3.client('s3')
+
 
 	def create_user(self, request):
 		"""Create a user.
@@ -72,12 +78,27 @@ class BaseAPI:
 		user.save()
 		return 1
 
+	def update_user(self, request):
+		# user_name = get_jwt_identity()
+		user_name = 'hank'
+		user = self.user.get(
+			self.user.user_name == user_name)
+		profile_image = request.files['file']
+		image_stream = io.StringIO(profile_image.stream.read(), newline=None)
+		payment_hash = request.form.get('payment_hash')
+		if profile_image:
+			image_url = self.upload_image(image_stream, user_name)
+			user.profile_image_url = image_url
+		# if payment_hash:
+		# 	user.payment_hash = payment_hash
+		return 1
+
+
 	def login_user(self, request):
 		user_name = request.form.get('user_name')
 		password = request.form.get('password')
 		user = self.user.get(
 			self.user.user_name == user_name)
-		print(user.password)
 		if check_password_hash(user.password, password):
 			return 1
 		return 0
@@ -226,4 +247,25 @@ class BaseAPI:
 
 	def log_data(self, msg):
 		logging.warning(msg)
+
+	def get_meaningful_error(self, e):
+		for key, value in known_errors.items():
+			if key in str(e):
+				msg = value
+				return msg
+		msg = 'Operation failed. Unknown error...'
+		return msg
+
+	def upload_image(self, profile_image, user_name):
+		self.s3.upload_fileobj(profile_image, "Media", user_name)
+		response = self.s3.generate_presigned_url(
+			'get_object',
+			Params={
+				'Bucket': 'Media',
+				'Key': user_name
+			},
+			ExpiresIn=expiration)
+		print(response.items())
+		return response.url
+
 
