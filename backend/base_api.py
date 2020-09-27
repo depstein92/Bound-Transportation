@@ -80,17 +80,27 @@ class BaseAPI:
 
 	def update_user(self, request):
 		# user_name = get_jwt_identity()
-		user_name = 'hank'
+		user_name = 'jeff' # simple testing setup
 		user = self.user.get(
 			self.user.user_name == user_name)
+
+		# parse request
 		profile_image = request.files['file']
-		image_stream = io.StringIO(profile_image.stream.read(), newline=None)
+
+		# read file as bytes stream to keep everything in memory
+		image_stream = io.BytesIO(profile_image.stream.read())
+
+		# payment hash if we end up using Stripe
 		payment_hash = request.form.get('payment_hash')
+
+		# apply update rules
 		if profile_image:
 			image_url = self.upload_image(image_stream, user_name)
 			user.profile_image_url = image_url
+
 		# if payment_hash:
 		# 	user.payment_hash = payment_hash
+		user.save()
 		return 1
 
 
@@ -257,15 +267,14 @@ class BaseAPI:
 		return msg
 
 	def upload_image(self, profile_image, user_name):
-		self.s3.upload_fileobj(profile_image, "Media", user_name)
+		self.s3.upload_fileobj(profile_image, "bound-transportation", user_name, ExtraArgs={ "ContentType": "image/jpeg"})
 		response = self.s3.generate_presigned_url(
 			'get_object',
 			Params={
-				'Bucket': 'Media',
+				'Bucket': 'bound-transportation',
 				'Key': user_name
-			},
-			ExpiresIn=expiration)
-		print(response.items())
-		return response.url
+			})
+		print(response)
+		return response
 
 
