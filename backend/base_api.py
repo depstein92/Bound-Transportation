@@ -80,7 +80,7 @@ class BaseAPI:
 
 	def update_user(self, request):
 		# user_name = get_jwt_identity()
-		user_name = 'jeff' # simple testing setup
+		user_name = 'jeff' # NOTE: will use JWT to get user_name
 		user = self.user.get(
 			self.user.user_name == user_name)
 
@@ -95,7 +95,7 @@ class BaseAPI:
 
 		# apply update rules
 		if profile_image:
-			image_url = self.upload_image(image_stream, user_name)
+			image_url = self.upload_profile_image(image_stream, user_name)
 			user.profile_image_url = image_url
 
 		# if payment_hash:
@@ -266,15 +266,20 @@ class BaseAPI:
 		msg = 'Operation failed. Unknown error...'
 		return msg
 
-	def upload_image(self, profile_image, user_name):
-		self.s3.upload_fileobj(profile_image, "bound-transportation", user_name, ExtraArgs={ "ContentType": "image/jpeg"})
+	def upload_profile_image(self, profile_image, name):
+		self.s3.upload_fileobj(
+			profile_image, 
+			"bound-transportation", 
+			name, 
+			ExtraArgs={ 
+				"ContentType": "image/jpeg"
+			})
 		response = self.s3.generate_presigned_url(
 			'get_object',
 			Params={
 				'Bucket': 'bound-transportation',
-				'Key': user_name
+				'Key': name
 			})
-		print(response)
 		return response
 
 
