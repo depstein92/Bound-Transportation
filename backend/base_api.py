@@ -86,15 +86,13 @@ class BaseAPI:
 
 		# parse request
 		profile_image = request.files['file']
-
-		# read file as bytes stream to keep everything in memory
-		image_stream = io.BytesIO(profile_image.stream.read())
-
 		# payment hash if we end up using Stripe
 		payment_hash = request.form.get('payment_hash')
 
 		# apply update rules
 		if profile_image:
+			# read file as bytestream to keep everything in memory
+			image_stream = io.BytesIO(profile_image.stream.read())
 			image_url = self.upload_profile_image(image_stream, user_name)
 			user.profile_image_url = image_url
 

@@ -1,4 +1,4 @@
 werkzeug - WARNING -  * Debugger is active!
 werkzeug - INFO -  * Debugger PIN: 246-964-716
-werkzeug - INFO - 127.0.0.1 - - [26/Sep/2020 18:38:28] "[37mGET / HTTP/1.1[0m" 200 -
-werkzeug - INFO - 127.0.0.1 - - [26/Sep/2020 18:38:31] "[37mPOST /update-user HTTP/1.1[0m" 200 -
+werkzeug - INFO - 127.0.0.1 - - [26/Sep/2020 20:22:02] "[37mGET / HTTP/1.1[0m" 200 -
+werkzeug - INFO - 127.0.0.1 - - [26/Sep/2020 20:23:07] "[37mPOST /update-user HTTP/1.1[0m" 200 -
