@@ -103,6 +103,21 @@ class BaseAPI:
 
 
 	def login_user(self, request):
+		"""Login as a user.
+
+		Parameters
+		----------
+
+		request: obj
+
+			A Flask `request` object.
+
+		Returns
+		-------
+
+		1: int
+
+		"""
 		user_name = request.form.get('user_name')
 		password = request.form.get('password')
 		user = self.user.get(
@@ -254,9 +269,39 @@ class BaseAPI:
 		return serialized
 
 	def log_data(self, msg):
+		"""Log errors. 
+
+		Parameters
+		----------
+
+		msg: str
+
+			The error message. 
+
+		Returns
+		-------
+
+		None
+		"""
 		logging.warning(msg)
 
 	def get_meaningful_error(self, e):
+		"""Get a meaningful error message to return.
+
+		Parameters
+		----------
+
+		e: obj
+
+			The error that has been raised.
+
+		Returns
+		-------
+
+		msg: str
+
+			A meaningful message error.
+		"""
 		for key, value in known_errors.items():
 			if key in str(e):
 				msg = value
@@ -265,6 +310,26 @@ class BaseAPI:
 		return msg
 
 	def upload_profile_image(self, profile_image, name):
+		"""Upload a profile image for a given User or Driver.
+
+		Parameters
+		----------
+
+		profile_image: bytes
+
+			A bytes object that represents the image to be uploaded.
+
+		name: str
+
+			The user or driver name associated with the targeted account.
+
+		Returns
+		-------
+
+		image_url: str
+
+			The url that points to the image in s3 bucket.
+		"""
 		self.s3.upload_fileobj(
 			profile_image, 
 			"bound-transportation", 
@@ -272,12 +337,12 @@ class BaseAPI:
 			ExtraArgs={ 
 				"ContentType": "image/jpeg"
 			})
-		response = self.s3.generate_presigned_url(
+		image_url = self.s3.generate_presigned_url(
 			'get_object',
 			Params={
 				'Bucket': 'bound-transportation',
 				'Key': name
 			})
-		return response
+		return image_url
 
 
