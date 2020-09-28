@@ -7,7 +7,6 @@ import boto3
 from flask_jwt_extended import get_jwt_identity
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
-from db import bt_db
 from db import User
 from db import Driver
 from db import Trip
@@ -81,6 +80,20 @@ class BaseAPI:
 		return 1
 
 	def update_user(self, request):
+		"""Update a User.
+
+		Parameters
+		----------
+
+		request: obj
+
+			A Flask `request` object.
+
+		Returns
+		-------
+
+		1: int
+		"""
 		# user_name = get_jwt_identity()
 		user_name = 'jeff' # NOTE: will use JWT to get user_name
 		user = self.user.get(
@@ -241,7 +254,14 @@ class BaseAPI:
 	# 	return user_id
 
 	def serialize_model(self, model_name, model):
-		"""Serialize Peewee database models.
+		"""Serialize Peewee database models. 
+
+		Note
+		----
+		Serializing models via this method is the *only safe way* 
+		to return JSON representations of models to the front end. 
+		This is because fields can be filtered by omission from 
+		the `serializer_values` portion of the config. 
 
 		Parameters
 		----------
