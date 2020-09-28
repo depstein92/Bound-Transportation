@@ -354,7 +354,7 @@ class BaseAPI:
 		----------
 
 		name: str
-		
+
 			The desired user or driver name. 
 
 
@@ -368,13 +368,13 @@ class BaseAPI:
 		"""
 		try:
 			user = self.user.get(self.user.user_name == name)
-			if user:
-				return 0
-			driver = self.driver.get(self.driver.driver_name == name)
-			if driver:
-				return 0
-			return 1
+			return 0
 		except:
-			return 1
+			try:
+				driver = self.driver.get(self.driver.driver_name == name)
+				return 0
+			except:
+				return 1
+
 
 
