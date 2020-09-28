@@ -30,6 +30,19 @@ def index():
 	print(type(index))
 	return index_view
 
+# Long polling solution to duplicate names across models
+@app.route('/name-available/<name>', methods=['GET'])
+def driver_or_user_name_available(name):
+	try:
+		available = base.driver_or_user_name_available(name)
+		response = {'msg': available}
+		return jsonify(response), 200
+	except Exception as e: 
+		base.log_data(str(e))
+		error = {'msg': str(e)}
+		return jsonify(error)
+
+
 @app.route('/create-user', methods=['POST'])
 def create_user():
 	try:
@@ -103,18 +116,6 @@ def get_trip_by_start_lat_long():
 	except Exception as e:
 		base.log_data(str(e))
 		error = base.get_meaningful_error(e)
-		return jsonify(error)
-
-
-@app.route('/get-user-by-name/<user_name>', methods=['GET'])
-@jwt_required
-def get_user(user_name):
-	try:
-		user = base.get_user_by_name(user_name)
-		return jsonify(user), 200
-	except Exception as e: 
-		base.log_data(str(e))
-		error = {'msg': 'Get user operation failed.'}
 		return jsonify(error)
 
 

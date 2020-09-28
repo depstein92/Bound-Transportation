@@ -71,8 +71,10 @@ class BaseAPI:
 		1: int
 		"""
 		kwargs = {}
-		kwargs['driver_name'] = \
-		request.form.get('driver_name')
+		raw_password = request.form.get('password')
+		hashed_password = generate_password_hash(raw_password)
+		kwargs['driver_name'] = request.form.get('driver_name')
+		kwargs['password'] = hashed_password
 		kwargs['driver_created'] = datetime.now()
 		driver = self.driver(**kwargs)
 		user.save()
@@ -344,5 +346,35 @@ class BaseAPI:
 				'Key': name
 			})
 		return image_url
+
+	def driver_or_user_name_available(self, name):
+		"""Check for availability of user or driver name. 
+
+		Parameters
+		----------
+
+		name: str
+		
+			The desired user or driver name. 
+
+
+		Returns
+		-------
+
+		0, 1: int
+
+			The availability status of the submitted name. 
+
+		"""
+		try:
+			user = self.user.get(self.user.user_name == name)
+			if user:
+				return 0
+			driver = self.driver.get(self.driver.driver_name == name)
+			if driver:
+				return 0
+			return 1
+		except:
+			return 1
 
 
