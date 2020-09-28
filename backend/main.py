@@ -4,8 +4,8 @@ from flask import jsonify
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import create_access_token
-from flask_jwt_extended import get_jwt_identity
 from base_api import BaseAPI
+
 
 app = Flask('__main__')
 base = BaseAPI()
@@ -13,10 +13,22 @@ app.config['JWT_SECRET_KEY'] = \
 base.config['api']['jwt_secret_key']
 jwt = JWTManager(app)
 
+############### testing view ###############
+
+from test_form_view import test_view
+if base.config['testing']['test_view']:
+	index_view = test_view
+
+else:
+	index_view = 'Service is up.'
+
+############################################
+
 
 @app.route('/', methods=['GET'])
 def index():
-	return 'Service is up.'
+	print(type(index))
+	return index_view
 
 @app.route('/create-user', methods=['POST'])
 def create_user():
@@ -25,24 +37,42 @@ def create_user():
 		if success:
 			success = {'msg': 'Successfully created user.'}
 			return jsonify(success), 200
-		response = {'msg': 'Create user operation failed.'}
-		return jsonify(response)
+		error = {'msg': 'Create user operation failed.'}
+		return jsonify(error)
 	except Exception as e:
 		base.log_data(str(e))
-		response = {'msg': 'Create user operation failed.'}
-		return jsonify(response), e[0][0]['code']
+		error = {'msg': 'Create user operation failed.'}
+		return jsonify(error)
+
 
 @app.route('/login-user', methods=['POST'])
 def login_user():
 	try:
 		success = base.login_user(request)
-		user_name = request.form.get('user_name')
-		access_token = create_access_token(identity=user_name)
-		return jsonify(access_token=access_token), 200
+		if success:
+			user_name = request.form.get('user_name')
+			access_token = create_access_token(identity=user_name)
+			return jsonify(access_token=access_token), 200
+		error = {'msg': 'Login failed.'}
 	except Exception as e:
 		base.log_data(str(e))
-		response = {'msg': 'Login failed.'}
-		return jsonify(response), e[0][0]['code']
+		error = base.get_meaningful_error(e)
+		return jsonify({'msg':error})
+
+
+@app.route('/update-user', methods=['POST'])
+def update_user():
+	try:
+		success = base.update_user(request)
+		if success:
+			response = {'msg': 'Successfully updated user profile.'}
+			return jsonify(response), 200
+		error = {'msg': 'Update user operation failed.'}
+		return jsonify(error)
+	except Exception as e:
+		# base.log(str(e))
+		# error = base.get_meaningful_error(e)
+		return jsonify({'msg': str(e)})
 
 
 @app.route('/login-driver', methods=['POST'])
@@ -54,12 +84,16 @@ def login_driver():
 def create_trip():
 	try:
 		success = base.create_trip(request)
-		success = {'msg': 'Successfully created trip.'}
-		return jsonify(success), 200
+		if success:
+			response = {'msg': 'Successfully created trip.'}
+			return jsonify(response), 200
+		error = {'msg': 'Create trip operation failed.'}
+		return jsonify(error)
 	except Exception as e:
 		base.log_data(str(e))
-		error = {'msg': 'Create trip operation failed.'}
-		return jsonify(error), e[0][0]['code']
+		error = base.get_meaningful_error(e)
+		return jsonify(error)
+
 
 @app.route('/get-trip-by-start-lat-long', methods=['POST'])
 def get_trip_by_start_lat_long():
@@ -68,8 +102,8 @@ def get_trip_by_start_lat_long():
 		return jsonify(trip), 200
 	except Exception as e:
 		base.log_data(str(e))
-		error = {'msg': 'Get trip operation failed.'}
-		return jsonify(error), e[0][0]['code']
+		error = base.get_meaningful_error(e)
+		return jsonify(error)
 
 
 @app.route('/get-user-by-name/<user_name>', methods=['GET'])
@@ -81,7 +115,7 @@ def get_user(user_name):
 	except Exception as e: 
 		base.log_data(str(e))
 		error = {'msg': 'Get user operation failed.'}
-		return jsonify(error), e[0][0]['code']
+		return jsonify(error)
 
 
 @app.route('/get-user-by-name', methods=['POST'])
@@ -94,7 +128,7 @@ def get_user_by_post():
 	except Exception as e:
 		base.log_data(str(e))
 		error = {'msg': 'Get user operation failed.'}
-		return jsonify(error), e[0][0]['code']
+		return jsonify(error)
 
 
 if __name__ == '__main__':

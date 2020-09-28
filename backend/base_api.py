@@ -1,13 +1,17 @@
 import configparser
+import io
 import logging
 import random
 from datetime import datetime
+import boto3
+from flask_jwt_extended import get_jwt_identity
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from db import bt_db
 from db import User
 from db import Driver
 from db import Trip
+from error_mapping import known_errors
 
 
 class BaseAPI:
@@ -23,6 +27,8 @@ class BaseAPI:
 			filename=self.log, 
 			filemode='w', 
 			format='%(name)s - %(levelname)s - %(message)s')
+		self.s3 = boto3.client('s3')
+
 
 	def create_user(self, request):
 		"""Create a user.
@@ -72,12 +78,50 @@ class BaseAPI:
 		user.save()
 		return 1
 
+	def update_user(self, request):
+		# user_name = get_jwt_identity()
+		user_name = 'jeff' # NOTE: will use JWT to get user_name
+		user = self.user.get(
+			self.user.user_name == user_name)
+
+		# parse request
+		profile_image = request.files['file']
+		# payment hash if we end up using Stripe
+		payment_hash = request.form.get('payment_hash')
+
+		# apply update rules
+		if profile_image:
+			# read file as bytestream to keep everything in memory
+			image_stream = io.BytesIO(profile_image.stream.read())
+			image_url = self.upload_profile_image(image_stream, user_name)
+			user.profile_image_url = image_url
+
+		# if payment_hash:
+		# 	user.payment_hash = payment_hash
+		user.save()
+		return 1
+
+
 	def login_user(self, request):
+		"""Login as a user.
+
+		Parameters
+		----------
+
+		request: obj
+
+			A Flask `request` object.
+
+		Returns
+		-------
+
+		1: int
+
+		"""
 		user_name = request.form.get('user_name')
 		password = request.form.get('password')
 		user = self.user.get(
 			self.user.user_name == user_name)
-		print(user.password)
 		if check_password_hash(user.password, password):
 			return 1
 		return 0
@@ -225,5 +269,80 @@ class BaseAPI:
 		return serialized
 
 	def log_data(self, msg):
+		"""Log errors. 
+
+		Parameters
+		----------
+
+		msg: str
+
+			The error message. 
+
+		Returns
+		-------
+
+		None
+		"""
 		logging.warning(msg)
+
+	def get_meaningful_error(self, e):
+		"""Get a meaningful error message to return.
+
+		Parameters
+		----------
+
+		e: obj
+
+			The error that has been raised.
+
+		Returns
+		-------
+
+		msg: str
+
+			A meaningful message error.
+		"""
+		for key, value in known_errors.items():
+			if key in str(e):
+				msg = value
+				return msg
+		msg = 'Operation failed. Unknown error...'
+		return msg
+
+	def upload_profile_image(self, profile_image, name):
+		"""Upload a profile image for a given User or Driver.
+
+		Parameters
+		----------
+
+		profile_image: bytes
+
+			A bytes object that represents the image to be uploaded.
+
+		name: str
+
+			The user or driver name associated with the targeted account.
+
+		Returns
+		-------
+
+		image_url: str
+
+			The url that points to the image in s3 bucket.
+		"""
+		self.s3.upload_fileobj(
+			profile_image, 
+			"bound-transportation", 
+			name, 
+			ExtraArgs={ 
+				"ContentType": "image/jpeg"
+			})
+		image_url = self.s3.generate_presigned_url(
+			'get_object',
+			Params={
+				'Bucket': 'bound-transportation',
+				'Key': name
+			})
+		return image_url
+
 
