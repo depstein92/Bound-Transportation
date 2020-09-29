@@ -7,7 +7,6 @@ import boto3
 from flask_jwt_extended import get_jwt_identity
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
-from db import bt_db
 from db import User
 from db import Driver
 from db import Trip
@@ -71,14 +70,30 @@ class BaseAPI:
 		1: int
 		"""
 		kwargs = {}
-		kwargs['driver_name'] = \
-		request.form.get('driver_name')
+		raw_password = request.form.get('password')
+		hashed_password = generate_password_hash(raw_password)
+		kwargs['driver_name'] = request.form.get('driver_name')
+		kwargs['password'] = hashed_password
 		kwargs['driver_created'] = datetime.now()
 		driver = self.driver(**kwargs)
 		user.save()
 		return 1
 
 	def update_user(self, request):
+		"""Update a User.
+
+		Parameters
+		----------
+
+		request: obj
+
+			A Flask `request` object.
+
+		Returns
+		-------
+
+		1: int
+		"""
 		# user_name = get_jwt_identity()
 		user_name = 'jeff' # NOTE: will use JWT to get user_name
 		user = self.user.get(
@@ -239,7 +254,14 @@ class BaseAPI:
 	# 	return user_id
 
 	def serialize_model(self, model_name, model):
-		"""Serialize Peewee database models.
+		"""Serialize Peewee database models. 
+
+		Note
+		----
+		Serializing models via this method is the *only safe way* 
+		to return JSON representations of models to the front end. 
+		This is because fields can be filtered by omission from 
+		the `serializer_values` portion of the config. 
 
 		Parameters
 		----------
@@ -344,5 +366,35 @@ class BaseAPI:
 				'Key': name
 			})
 		return image_url
+
+	def driver_or_user_name_available(self, name):
+		"""Check for availability of user or driver name. 
+
+		Parameters
+		----------
+
+		name: str
+
+			The desired user or driver name. 
+
+
+		Returns
+		-------
+
+		0, 1: int
+
+			The availability status of the submitted name. 
+
+		"""
+		try:
+			user = self.user.get(self.user.user_name == name)
+			return 0
+		except:
+			try:
+				driver = self.driver.get(self.driver.driver_name == name)
+				return 0
+			except:
+				return 1
+
 
 
